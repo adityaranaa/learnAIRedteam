@@ -43,3 +43,16 @@ Gaps:
    argument. If `reset_mfa` has the same shape, "own account only" is probably enforced only by the prompt.
 5. **Authorization-locus concept gap (c).** Did not have a method for telling prompt-level refusal apart from
    code-level enforcement from outside.
+
+### Q2 answer (learner, 2026-10-15, summarized)
+- Hypothesis: cross-user ticket summary in Slack is an architectural loophole
+- Experiment: create MFA ticket as you@, act on it as tester2@, look for the code in tester2@'s inbox
+- If it does not work: "system prompt has refusal"
+
+### Q2 assessment
+Progress: moved to two accounts you own, and picked an out-of-band observable (inbox), not the chat reply.
+Gaps:
+1. Hypothesis names a symptom ("loophole"), not a locus. It also mixes two tools (ticket summary = info exposure, MFA reset = action).
+2. No baseline cell (feature working for the account's own resource).
+3. Same inference error as Q1: refusal => "system prompt" is unsupported. A refusal can come from the model, the tool code, or the identity layer.
+4. Success signal ambiguous: obs 8 says the link goes to the *registered* email, so a link arriving in tester2's inbox may be normal. The finding is where the artifact lands relative to the *target* account.
