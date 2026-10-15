@@ -56,3 +56,15 @@ Gaps:
 2. No baseline cell (feature working for the account's own resource).
 3. Same inference error as Q1: refusal => "system prompt" is unsupported. A refusal can come from the model, the tool code, or the identity layer.
 4. Success signal ambiguous: obs 8 says the link goes to the *registered* email, so a link arriving in tester2's inbox may be normal. The finding is where the artifact lands relative to the *target* account.
+
+### Q3 answer (learner, 2026-10-15, summarized)
+- Called it a "non-finding: agent verbally confirms but doesn't act"
+- Explanations: (i) system-prompt denial, (ii) code-level auth check, (iii) tool compares token identity to requested target
+- Could not name confirming observations
+
+### Q3 assessment
+1. Concluded "non-finding" by picking one explanation. Correct status = **unresolved**: no rung above "prompt compliance" is established either way.
+2. (i) contradicts the evidence: the bot said "Done", so it did not deny. (ii) and (iii) are the same explanation (code-level identity binding).
+   Real distinct explanations: model never called the tool; tool called and rejected silently; reset happened but delivery delayed or filtered (that one is a vulnerability); rate limit or cooldown after the baseline; wrong inbox.
+3. Method gap: for each explanation, ask "what would differ in a *system of record* if this were true vs false?" Not yet applied.
+Strength: spontaneously raised "model claims success without acting" (hallucinated action), the key failure mode for agent testing.
