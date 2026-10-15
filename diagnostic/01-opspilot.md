@@ -22,3 +22,24 @@ Authorized black-box test; no source access.
 - Q4 Root cause, architectural mitigation, regression test
 
 ## Answers & assessment
+
+### Q1 answer (learner, 2026-10-15, summarized)
+- Entry points: Slack DM, Confluence (anyone can edit, read by the bot), email
+- Indirect prompt injection via an edited Confluence page, triggered by a Slack DM
+- Assumption: bot has many tools and access to all employee asset data
+- Bot "controls" Jira; MFA can be reset via support@corp.com → Jira → OpsPilot
+- (c) unsure; leaned toward "system prompt" without a reason
+
+### Q1 assessment
+Strong: independently found the Confluence indirect-injection vector and named email as an input.
+Gaps:
+1. **Facts vs assumptions mixed.** "Reset MFA via support@corp.com" is not observed; it merges obs 7 and 8.
+2. **No asset list.** Biggest asset = the MFA reset action (account takeover). Others: device and owner data,
+   ticket contents, the `opspilot-bot` service account privileges.
+3. **Missed the strongest chain.** An unauthenticated internet sender writes a ticket (obs 7), OpsPilot reads
+   ticket text into context (obs 6), and the same agent holds an MFA-reset tool (obs 8). That is an external
+   attacker reaching a privileged agent, which is worse than an insider editing Confluence.
+4. **Missed the identity clue.** Obs 4: `get_device(owner_email=...)` means the *model fills in* the identity
+   argument. If `reset_mfa` has the same shape, "own account only" is probably enforced only by the prompt.
+5. **Authorization-locus concept gap (c).** Did not have a method for telling prompt-level refusal apart from
+   code-level enforcement from outside.
