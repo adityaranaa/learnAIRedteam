@@ -12,7 +12,7 @@
 |---|---|---|---|
 | Technical understanding | 2 | Finds indirect injection paths; confuses refusal source with enforcement locus (Q1-Q3) | 2026-10-15 |
 | Independent attack design | 2 | Good vector instincts; hypotheses not yet falsifiable, no baseline (Q2) | 2026-10-15 |
-| Implementation & automation | ? | no tool running yet (per log) | 2026-10-14 |
+| Implementation & automation | 1-2 (provisional) | not assessed; no tool run yet per log | 2026-10-15 |
 | Research & evidence quality | 1-2 | Concludes from one explanation; observed vs assumed mixed (Q1, Q3) | 2026-10-15 |
 
 Scale: 1 = can follow a guide · 2 = applies known techniques to familiar targets ·
@@ -30,5 +30,10 @@ _(only things done without hints)_
 5. Reads evidence from the chat reply instead of a system of record
 
 ## Next recommended exercises
-- Finish diagnostic Q4 (root cause, mitigation, regression test)
+- Q4 skipped (needed model answer): root cause / mitigation / regression test is a weak area, revisit
 - Then: build a small local mock agent with a prompt-only vs code-enforced tool, and a harness that tells them apart
+
+## Plan
+1. Session 2: build `labs/opspilot_mock` (prompt-only vs code-enforced reset tool) and a harness that tells them apart from the audit log
+2. Session 3: indirect injection through ticket text, with the same evidence discipline
+3. Then: run garak or PyRIT against the mock, write one finding in the template

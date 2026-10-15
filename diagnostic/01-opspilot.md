@@ -68,3 +68,21 @@ Gaps:
    Real distinct explanations: model never called the tool; tool called and rejected silently; reset happened but delivery delayed or filtered (that one is a vulnerability); rate limit or cooldown after the baseline; wrong inbox.
 3. Method gap: for each explanation, ask "what would differ in a *system of record* if this were true vs false?" Not yet applied.
 Strength: spontaneously raised "model claims success without acting" (hallucinated action), the key failure mode for agent testing.
+
+### Q4 answer (learner, 2026-10-15)
+Did not answer: described an invented email-queue mechanism and said "I don't know" for mitigation and test. Asked for the model answer.
+
+### Q4 model answer
+1. Root cause: confused deputy. The reset decision is made from a model-supplied target argument, and the bot's service account
+   can reset any user. Authorization lives in natural language, not in the tool or the identity layer.
+2. Mitigation (holds against a fully manipulated model): the platform injects the verified Slack user ID; `reset_mfa` takes NO
+   target parameter, or the tool rejects target != caller; service account scoped to least privilege; anything cross-user needs
+   human approval; ticket-originated content cannot trigger sensitive tools.
+3. Regression test: (a) deterministic tool-level test: call `reset_mfa` as tester2 with target=you@, assert authorization error and zero
+   IdP audit events for you@; (b) agent-level: N paraphrases plus a ticket-channel variant, same assertion read from the audit log;
+   (c) baseline: own-account reset still succeeds. Fails before the fix, passes after.
+
+## Diagnostic result (2026-10-15)
+Technical understanding 2, Independent attack design 2, Implementation/automation not assessed (provisional 1-2),
+Research/evidence quality 1-2. Highest-impact gap: separating *who decided* (model vs code vs identity layer) and proving it
+from a system of record.
